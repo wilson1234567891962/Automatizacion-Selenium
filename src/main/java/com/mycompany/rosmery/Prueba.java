@@ -24,7 +24,7 @@ public class Prueba {
         startConfiguration();
         Thread.sleep(5000);
         runJavaScript("window.scrollBy(0,300)");
-        switchFrame();
+        switchFrame(0);
         webElement = webDriver.findElement(By.xpath("/html/body/form/table/tbody/tr/td/table/tbody/tr[6]/td[1]"));
         webElement.click();
         validatePopUp("Los campos del formulario no se han diligenciado");
@@ -36,6 +36,10 @@ public class Prueba {
         webDriver.close();
     }
 
+    /**
+     * Metodo para cerrar, aceptar y leer el texto de un pop up
+     * @param comparator 
+     */
     private static void validatePopUp(String comparator) {
         Alert alert = webDriver.switchTo().alert();
         String message = alert.getText();
@@ -43,16 +47,27 @@ public class Prueba {
         alert.accept();
     }
 
+    /**
+     * Metodo para ejecutar javascript en la pagina web
+     * @param command 
+     */
     private static void runJavaScript(String command) {
         JavascriptExecutor javascriptExecutor = (JavascriptExecutor) webDriver;
         javascriptExecutor.executeScript(command);
     }
 
-    private static void switchFrame() {
-        webDriver.switchTo().defaultContent(); // you are now outside both frames
-        webDriver.switchTo().frame(0);
+    /**
+     * Metodo para navegar entre frames de la pagina web
+     * @param position
+     */
+    private static void switchFrame(int position) {
+        webDriver.switchTo().defaultContent(); 
+        webDriver.switchTo().frame(position);
     }
 
+    /**
+     * Metodo para setear la configuracion de selenium
+     */
     private static void startConfiguration() {
         String name= System.getProperty("os.name");
         if(name.toLowerCase().trim().startsWith("mac")){
@@ -62,6 +77,6 @@ public class Prueba {
         }
         webDriver = new ChromeDriver();
         webDriver.manage().window().maximize();
-        webDriver.get("https://www.unipiloto.edu.co/estudiantes/olvidaste-tu-usuario/"); // Con este metodo abrimos la url de la pagina
+        webDriver.get(""); // Con este metodo abrimos la url de la pagina
     }
 }
